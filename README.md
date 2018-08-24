@@ -11,3 +11,5 @@ functions - functioning secure user registration and login
          - easy to use front end website
          - ability for user to easily edit data
          - ability for user to easily sort data
+         - allow for users to create named groups
+         - allow for users to save influencers in groups

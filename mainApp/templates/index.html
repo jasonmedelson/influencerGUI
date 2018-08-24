@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{%block body%}
+    <div id="home">
+        <div class="container-fluid pt-2">
+            {% if user.is_authenticated %}
+                <div class="row search-row ">
+                  <div class="col-7 main-content">
+                    <h2>{{ user.get_username|title }}'s Dashboard </h2>
+                  </div>
+                  <div class="col-5 ">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <select class="custom-select" id="inputGroupSelect01">
+                          <option selected>All</option>
+                          <option value="1">Name</option>
+                          <option value="2">Email</option>
+                          <option value="3">Country</option>
+                        </select>
+                      </div>
+                      <input type="text" class="form-control mr-sm-1 ml-sm-1" aria-label="Text input with dropdown button">
+                      <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                    </div>
+                  </div>
+                </div>
+            <!-- End of Search row -->
+            <div class="data-table">
+              <table rules="groups" frame="hsides" border="2">
+                <colgroup></colgroup>
+                <colgroup></colgroup>
+                <colgroup></colgroup>
+                <colgroup></colgroup>
+                <colgroup></colgroup>
+                <colgroup></colgroup>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Country</th>
+                        <th>Shirt</th>
+                        <th>Twitter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for a,b,c,d,e,f in info %}
+                    <tr>
+                        <td class="text">{{ a }}</td>
+                        <td class="text">{{ b }}</td>
+                        <td class="text">{{ c }}</td>
+                        <td class="numb">{{ d }}</td>
+                        <td class="numb">{{ e }}</td>
+                        <td class="text">{{ f }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+            {% else %}
+                <h1 class="d-block text-center mt-4">Please Login</h1>
+            {% endif %}
+        </div>
+    </div>
+{%endblock%}

@@ -5,9 +5,21 @@ import uuid
 
 class Tags(models.Model):
     tag_name = models.CharField(max_length=40)
+    def __str__(self):
+        return self.tag_name
+
+    class Meta:
+
+        ordering = ('tag_name',)
 
 class Events(models.Model):
     event_name = models.CharField(max_length=40)
+    def __str__(self):
+        return self.event_name
+
+    class Meta:
+
+        ordering = ('event_name',)
 
 class Influencer(models.Model):
     XSMALL = 'XS'
@@ -30,6 +42,24 @@ class Influencer(models.Model):
         (XXXXLARGE, '4X Large'),
         (XXXXXLARGE, '5X Large'),
     )
+    US = 'USA'
+    CANADA = 'CAN'
+    SAMERICA = 'SAM'
+    UK = 'UNK'
+    FRANCE= 'FRA'
+    ASIA= 'ASN'
+    OTHEREURO = 'OEU'
+    OTHER = 'OTH'
+    COUNTRY_CHOICES = (
+        (US, 'United States'),
+        (CANADA, 'Canada'),
+        (UK, 'United Kingdom'),
+        (SAMERICA, 'South America'),
+        (FRANCE, 'France'),
+        (ASIA, 'Asia'),
+        (OTHEREURO, 'Europe'),
+        (OTHER, 'Other'),
+    )
     user = models.ForeignKey(User,on_delete=models.CASCADE,)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -44,6 +74,12 @@ class Influencer(models.Model):
         default = XLARGE,
         blank = True,
     )
+    country = models.CharField(
+        max_length=3,
+        choices = COUNTRY_CHOICES,
+        blank = True,
+        default=US
+        )
     twitter = models.URLField(blank = True,)
     youtube = models.URLField(blank = True,)
     twitch = models.URLField(blank = True,)

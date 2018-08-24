@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{%  block body %}
+    <div id="homenav" class="anchor-target"></div>
+    <div id="home">
+        <div class="container-fluid">
+            <div>
+                <h2>Login</h2>
+                <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Login</button>
+                </form>
+                <br/>
+                <a href="#">Click here to register</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

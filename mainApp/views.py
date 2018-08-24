@@ -8,7 +8,7 @@ def index(request):
     if request.user.is_authenticated:
         username = request.user
         userid = request.user.id
-    all_influencers = Influencer.objects.filter(user = userid)
+        all_influencers = Influencer.objects.filter(user = userid)
     Name = []
     Email = []
     Phone = []

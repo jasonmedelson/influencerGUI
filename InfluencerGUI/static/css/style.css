@@ -47,6 +47,9 @@ div.show ul.navbar-nav li.nav-item{
   background: rgba(228,228,228,1);
   height: 800px;
 }
+.influencer-table{
+  margin: auto;
+}
 /* Footer */
 footer {
   background-color: #222327;

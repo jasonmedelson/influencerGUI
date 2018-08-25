@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from mainApp.models import Influencer, Events, Tags
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 
 def index(request):
     username = None
@@ -22,7 +23,7 @@ def index(request):
             Phone.append(all_influencers[number].phone)
             Country.append(all_influencers[number].country)
             Shirt.append(all_influencers[number].shirt)
-            Twitter.append(all_influencers[number].id)
+            Twitter.append(all_influencers[number].tags.all())
     except:
         Name.append('Error')
         Email.append('Error')
@@ -44,3 +45,17 @@ def index(request):
         './index.html',
         context={'info':zipped}
     )
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})

@@ -10,4 +10,6 @@ urlpatterns = [
     path('', include('mainApp.urls')),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^login/$', auth_views.login, name='login'),
+    url(r'^signup/$', core_views.signup, name='signup'),
+
 ]

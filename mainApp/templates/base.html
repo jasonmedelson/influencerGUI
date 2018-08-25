@@ -43,7 +43,7 @@
                 <li class="border border-primary nav-item"><a class="nav-link" href="{% url 'logout'%}?next=/"> Logout</a></li>
               {% else %}
                 <li class="border border-success nav-item mr-2"><a class="nav-link" href="{% url 'login'%}?next=/">Login</a></li>
-                <li class="border border-danger nav-item"><a class="nav-link" href="#">Register</a></li>
+                <li class="border border-danger nav-item"><a class="nav-link" href="{% url 'signup'%}">Register</a></li>
               {% endif %}
             </ul>
           </div>

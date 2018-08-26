@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 import uuid
 # Create your models here.
 
@@ -84,11 +85,14 @@ class Influencer(models.Model):
     youtube = models.URLField(blank = True,)
     twitch = models.URLField(blank = True,)
     notes = models.TextField(blank = True,)
-    tags = models.ManyToManyField(Tags)
-    events = models.ManyToManyField(Events)
+    tags = models.ManyToManyField(Tags,blank=True)
+    events = models.ManyToManyField(Events,blank=True)
 
     def __str__(self):
         return self.influencer_name
+
+    def get_absolute_url(self):
+        return reverse('influencer-update', kwargs={'pk': self.id})
 
     class Meta:
 

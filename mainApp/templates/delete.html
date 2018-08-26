@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{%  block body %}
+    <div id="homenav" class="anchor-target"></div>
+    <div id="home">
+        <div class="container-fluid">
+            <div>
+              <a href="{% url 'index' %}">Go Back To Home</a>
+              <form method="post">
+                {% csrf_token %}
+                <button class="btn btn-danger">Are you sure you want to delete ?</button>
+              </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

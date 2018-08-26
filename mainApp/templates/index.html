@@ -12,45 +12,42 @@
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <select class="custom-select" id="inputGroupSelect01">
-                          <option selected>All</option>
+                          <option selected value="0">All</option>
                           <option value="1">Name</option>
                           <option value="2">Email</option>
                           <option value="3">Country</option>
                         </select>
                       </div>
-                      <input type="text" class="form-control mr-sm-1 ml-sm-1" aria-label="Text input with dropdown button">
+                      <input type="text" id="myInputTextField" class="form-control mr-sm-1 ml-sm-1" aria-label="Text input with dropdown button">
                       <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
                     </div>
                   </div>
                 </div>
             <!-- End of Search row -->
             <div class="data-table">
-              <table class='influencer-table mt-2 table' rules="groups" frame="hsides" border="2">
-                <colgroup></colgroup>
-                <colgroup></colgroup>
-                <colgroup></colgroup>
-                <colgroup></colgroup>
-                <colgroup></colgroup>
-                <colgroup></colgroup>
-                <thead>
+              <table id="myTable" class='influencer-table mt-2 table table-hover display'>
+
+                <thead class="thead-dark">
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Country</th>
-                        <th>Shirt</th>
-                        <th>Twitter</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Shirt</th>
+                        <th scope="col">Twitter</th>
+                        <th scope="col">Edit</th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for a,b,c,d,e,f in info %}
+                {% for a,b,c,d,e,f,g in info %}
                     <tr>
-                        <td class="text">{{ a }}</td>
+                        <td class="text" scope="row">{{ a }}</td>
                         <td class="text">{{ b }}</td>
                         <td class="text">{{ c }}</td>
                         <td class="numb">{{ d }}</td>
                         <td class="numb">{{ e }}</td>
                         <td class="text">{{ f }}</td>
+                        <td><a href="{{g.get_absolute_url}}" class="btn btn-primary active" role="button" aria-pressed="true">Edit Influencer</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

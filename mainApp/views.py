@@ -113,3 +113,43 @@ class InfluencerDelete(DeleteView):
     template_name = 'delete.html'
     model = Influencer
     success_url = reverse_lazy('index')
+
+class TagCreate(CreateView):
+    model = Tags
+    fields = [
+    'tag_name'
+    ]
+    success_url = reverse_lazy('index')
+
+
+class TagUpdate(UpdateView):
+    model = Tags
+    fields = [
+    'tag_name'
+    ]
+    success_url = reverse_lazy('index')
+
+class TagDelete(DeleteView):
+    template_name = 'delete.html'
+    model = Tags
+    success_url = reverse_lazy('index')
+
+class EventCreate(CreateView):
+    model = Events
+    fields = [
+    'event_name'
+    ]
+    success_url = reverse_lazy('index')
+
+
+class EventUpdate(UpdateView):
+    model = Events
+    fields = [
+    'event_name'
+    ]
+    success_url = reverse_lazy('index')
+
+class EventDelete(DeleteView):
+    template_name = 'delete.html'
+    model = Events
+    success_url = reverse_lazy('index')

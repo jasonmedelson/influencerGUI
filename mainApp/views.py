@@ -13,42 +13,77 @@ def index(request):
         userid = request.user.id
         all_influencers = Influencer.objects.filter(user = userid)
 
-    Name = []
-    Email = []
-    Phone = []
-    Country = []
-    Shirt = []
-    Twitter = []
+    Name =[]
+    Email =[]
+    Twitch =[]
+    Twitter =[]
+    Country =[]
+    Shirt =[]
+    Edit =[]
+    Last_Updated =[]
+    Mailing_Address =[]
+    Phone =[]
+    Youtube =[]
+    tags =[]
+    events =[]
     influencer = []
+
     try:
         for number in range(len(all_influencers)):
             Name.append(all_influencers[number].influencer_name)
             Email.append(all_influencers[number].email)
-            Phone.append(all_influencers[number].phone)
+            Twitch.append(all_influencers[number].twitch)
+            Twitter.append(all_influencers[number].twitter)
             Country.append(all_influencers[number].country)
             Shirt.append(all_influencers[number].shirt)
+            influencer.append(all_influencers[number])
+            timestamp = all_influencers[number].updated_at
+            timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+            Last_Updated.append(timestamp)
+            Mailing_Address.append(all_influencers[number].mailing_address)
+            Phone.append(all_influencers[number].phone)
+            Youtube.append(all_influencers[number].youtube)
             hold = ""
             i_tags = all_influencers[number].tags.all()
             for item in i_tags:
                 hold += item.tag_name + ', '
             hold = hold[:-2]
-            Twitter.append(hold)
-            influencer.append(all_influencers[number])
+            tags.append(hold)
+            hold = ""
+            e_tags = all_influencers[number].events.all()
+            for item in e_tags:
+                hold += item.event_name + ', '
+            hold = hold[:-2]
+            events.append(hold)
     except:
         Name.append('Error')
         Email.append('Error')
-        Phone.append('Error')
+        Twitch.append('Error')
+        Twitter.append('Error')
         Country.append('Error')
         Shirt.append('Error')
-        Twitter.append('Error')
+        Last_Updated.append('Error')
+        Mailing_Address.append('Error')
+        Phone.append('Error')
+        Youtube.append('Error')
+        tags.append('Error')
+        events.append('Error')
+        influencer = 'Error'
 
-    zipped = zip(Name,
+    zipped = zip(
+        Name,
         Email,
-        Phone,
+        Twitch,
+        Twitter,
         Country,
         Shirt,
-        Twitter,
         influencer,
+        Last_Updated,
+        Mailing_Address,
+        Phone,
+        Youtube,
+        tags,
+        events,
         )
 
     return render(

@@ -43,9 +43,12 @@ div.show ul.navbar-nav li.nav-item{
 }
 
 /* Home */
+html, body{
+  height: 100%;
+}
 #home{
   background: rgba(228,228,228,1);
-  height: 800px;
+  height: 100%;
 }
 .edit-button{
   border: 1px solid black;
@@ -73,4 +76,56 @@ footer p {
 }
 .text{
   mso-number-format:"\@";/*force text*/
+}
+
+/* Login form */
+.login-box{
+  max-width: 430px;
+  margin:auto;
+  margin-top: 50px;
+  background: #fff;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+  padding:0;
+}
+.login-head{
+  background: rgba(63, 112, 195, 0.8);
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  padding-top:10px;
+  color: white;
+
+}
+.register-link{
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+.login-box form p label{
+  color: #555;
+  display: inline-block;
+  margin-left: 10%;
+  font-size: 16px;
+}
+.login-box form p input{
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  outline: none;
+  display: block;
+  color: #777;
+  padding-left: 10px;
+  margin:auto;
+  width: 80%;
+  height: 35px;
+  border: 1px solid #c7d0d2;
+  border-radius: 2px;
+  box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .4), 0 0 0 5px #f5f7f8;
+}
+.login-button{
+  margin:auto;
+  width:60%;
+  display: block;
+  font-size: 18px;
 }

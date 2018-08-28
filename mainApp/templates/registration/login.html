@@ -9,11 +9,11 @@
             <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-success login-button">Login</button>
+            <button type="submit" class="btn btn-success login-button mt-4">Login</button>
             </form>
             <br/>
             <div class="mx-auto">
-              <a class="register-link" href="{% url 'signup'%}">Click here to register</a>
+              <a class="register-link mb-3" href="{% url 'signup'%}"><button class='btn btn-info'>No account? Register</button></a>
             </div>
           </div>
           <div class="col-4"></div>

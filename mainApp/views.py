@@ -112,13 +112,13 @@ class InfluencerCreateForm(forms.ModelForm):
         fields = [
         'influencer_name',
         'email',
-        'mailing_address',
         'phone',
-        'shirt',
-        'country',
         'twitter',
         'youtube',
         'twitch',
+        'shirt',
+        'country',
+        'mailing_address',
         'notes',
         'tags',
         'events'

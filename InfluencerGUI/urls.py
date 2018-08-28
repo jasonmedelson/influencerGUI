@@ -8,8 +8,8 @@ from mainApp import views as core_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainApp.urls')),
-    url(r'^logout/$', auth_views.logout, name='logout'),
-    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.LogoutView, name='logout'),
+    url(r'^login/$', auth_views.LoginView, name='login'),
     url(r'^signup/$', core_views.signup, name='signup'),
 
 ]

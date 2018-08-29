@@ -121,8 +121,6 @@ class InfluencerCreateForm(forms.ModelForm):
         'youtube',
         'twitch',
         'shirt',
-        'created_at',
-        'updated_at',
         'country',
         'mailing_address',
         'notes',

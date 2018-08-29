@@ -5,9 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
-from dal import autocomplete
 
 def index(request):
     username = None

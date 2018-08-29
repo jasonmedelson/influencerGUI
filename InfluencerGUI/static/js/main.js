@@ -93,7 +93,7 @@ $(document).ready(function() {
   })
 
 })
-function list_filter(){
+function tags_filter(){
   var item;
   var input = document.getElementById('search-tags');
   var filter = input.value.toUpperCase();
@@ -108,6 +108,24 @@ function list_filter(){
     }
   }
 }
+function events_filter(){
+  var item;
+  var input = document.getElementById('search-events');
+  var filter = input.value.toUpperCase();
+  var list_items = document.getElementById("id_events").childNodes
+  for(var i=1; i<list_items.length; i+=2){
+    item = list_items[i];
+    if(item.textContent.toUpperCase().indexOf(filter) == -1){
+      list_items[i].style.display = "none";
+    }
+    else{
+      list_items[i].style.display = '';
+    }
+  }
+}
 if ( $( "#id_tags" ).length ) {
-    $( "#id_tags" ).before("<input type='text' id='search-tags' onkeyup='list_filter()' placeholder='Search for tags'></input>");
+    $( "#id_tags" ).before("<input type='text' id='search-tags' onkeyup='tags_filter()' placeholder='Search for Tags'></input>");
+}
+if ( $( "#id_events" ).length ) {
+    $( "#id_events" ).before("<input type='text' id='search-events' onkeyup='events_filter()' placeholder='Search for Events'></input>");
 }

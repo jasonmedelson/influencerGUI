@@ -2,21 +2,36 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12 col-md-7">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {% include 'form-template.html' %}
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success">Submit</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+          <div class="col-2"></div>
+          <div class="influencer-form-panel col-sm-12 col-md-8 mx-auto mt-4">
+              <h2 class="panel-head ">Create New Influencer</h2>
+              <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                  <div class="form-group row my-4">
+                    {% for field in form %}
+                      <div class="">
+                          <span class="text-danger small">{{ field.errors }}</span>
+                      </div>
+                      <!-- {% if "mail" in field.label_tag %}
+                        <h1>FOUND</h1>
+                      {% endif %} -->
+                      <div class="col-6">
+                        <div class="form-label-container">
+                          <label class="influencer-form-label text-center">{{ field.label_tag|title }}</label>
+                        </div>
+                        <div class="">
+                          <div class="tag-field col">{{ field }}</div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                      <div class="">
+                          <button type="submit" class="btn btn-success submit-form">Submit</button>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="col-2"></div>
         </div>
     </div>
 {% endblock %}

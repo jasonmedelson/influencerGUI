@@ -5,7 +5,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
+from dal import autocomplete
+
 def index(request):
     username = None
     if request.user.is_authenticated:
@@ -107,7 +110,8 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 class InfluencerCreateForm(forms.ModelForm):
-     class Meta:
+
+    class Meta:
         model = Influencer
         fields = [
         'influencer_name',
@@ -121,14 +125,16 @@ class InfluencerCreateForm(forms.ModelForm):
         'mailing_address',
         'notes',
         'tags',
-        'events'
+        'events',
         ]
         widgets = {
+            # 'tags': FilteredSelectMultiple("Tags",is_stacked=False,choices=Tags.objects.all()),
             'tags': forms.CheckboxSelectMultiple(),
-            'events': forms.CheckboxSelectMultiple()
+            'events': forms.CheckboxSelectMultiple(),
         }
 
 class InfluencerCreate(CreateView):
+    temp_search = forms.TextInput()
     model = Influencer
     form_class = InfluencerCreateForm
     success_url = reverse_lazy('index')
@@ -188,3 +194,11 @@ class EventDelete(DeleteView):
     template_name = 'delete.html'
     model = Events
     success_url = reverse_lazy('index')
+#
+# class TagAutoComplete(autocomplete.Select2QuerySetView):
+#     def get_queryset(self):
+#         qs = Tags.objects.all()
+#
+#         if self.q:
+#             qs = qs.filter(tag_name__istartswith=self.q)
+#         return qs

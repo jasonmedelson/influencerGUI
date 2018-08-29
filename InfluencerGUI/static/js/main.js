@@ -93,3 +93,21 @@ $(document).ready(function() {
   })
 
 })
+function list_filter(){
+  var item;
+  var input = document.getElementById('search-tags');
+  var filter = input.value.toUpperCase();
+  var list_items = document.getElementById("id_tags").childNodes
+  for(var i=1; i<list_items.length; i+=2){
+    item = list_items[i];
+    if(item.textContent.toUpperCase().indexOf(filter) == -1){
+      list_items[i].style.display = "none";
+    }
+    else{
+      list_items[i].style.display = '';
+    }
+  }
+}
+if ( $( "#id_tags" ).length ) {
+    $( "#id_tags" ).before("<input type='text' id='search-tags' onkeyup='list_filter()' placeholder='Search for tags'></input>");
+}

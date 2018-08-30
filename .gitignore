@@ -21,6 +21,6 @@ $RECYCLE.BIN/
 # =========================
 # Operating System Files
 # =========================
-dir_to_exclude/staticfiles
-#staticfiles/admin/css/autocomplete.781713f30664.css
-staticfiles/*
+**/staticfiles/*
+**/migrations/*
+**/__pycache__/*

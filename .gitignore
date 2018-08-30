@@ -24,3 +24,4 @@ $RECYCLE.BIN/
 **/staticfiles/*
 **/migrations/*
 **/__pycache__/*
+*.sqlite3

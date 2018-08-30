@@ -19,6 +19,7 @@ class Tags(models.Model):
 
 class Events(models.Model):
     event_name = models.CharField(max_length=40)
+    event_user = models.ForeignKey(User,on_delete=models.CASCADE,)
     def __str__(self):
         return self.event_name
 

@@ -134,7 +134,7 @@ class InfluencerCreateForm2(forms.ModelForm):
 
 def InfluencerCreate(request):
     if request.method == 'POST':
-        form = InfluencerCreateForm( request.POST,user = request.user,)
+        form = InfluencerCreateForm( request.user, request.POST, )
         if form.is_valid():
             influencer = form.save(commit=False)
             influencer.user = request.user
@@ -156,10 +156,19 @@ def InfluencerCreate(request):
 #         influencer.save()
 #         return redirect('index')
 
-class InfluencerUpdate(UpdateView):
-    model = Influencer
-    form_class = InfluencerCreateForm2
-
+# class InfluencerUpdate(UpdateView):
+#     model = Influencer
+#     form_class = InfluencerCreateForm2
+def InfluencerUpdate(request, pk):
+    object = Influencer.objects.get(id = pk)
+    if request.method == 'POST':
+        form = InfluencerCreateForm( request.user, request.POST, instance = object, )
+        if form.is_valid():
+            influencer = form.save(commit=True)
+            return redirect('index')
+    else:
+        form = InfluencerCreateForm(request.user, instance = object, )
+    return render(request, 'mainApp/influencer_form.html', {'form': form})
 
 class InfluencerDelete(DeleteView):
     template_name = 'delete.html'
@@ -191,12 +200,18 @@ class TagDelete(DeleteView):
     model = Tags
     success_url = reverse_lazy('index')
 
+
 class EventCreate(CreateView):
     model = Events
     fields = [
     'event_name'
     ]
     success_url = reverse_lazy('index')
+    def form_valid(self, form):
+        eventForm = form.save(commit=False)
+        eventForm.event_user = self.request.user
+        eventForm.save()
+        return redirect('index')
 
 
 class EventUpdate(UpdateView):

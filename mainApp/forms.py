@@ -25,5 +25,9 @@ class InfluencerCreateForm(forms.ModelForm):
             'events': forms.CheckboxSelectMultiple(),
         }
     def __init__(self, user, *args, **kwargs):
+        # self.user = kwargs.pop('user', None)
+        # del kwargs['user']
+
         super(InfluencerCreateForm, self).__init__(*args, **kwargs)
         self.fields['tags'].queryset = Tags.objects.filter(tag_user=user)
+        self.fields['events'].queryset = Events.objects.filter(event_user=user)

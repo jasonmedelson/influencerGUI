@@ -7,6 +7,7 @@
               <h2 class="panel-head ">Create New Influencer</h2>
               <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                   <div class="form-group row my-4">
+                    {% csrf_token %}
                     {% for field in form %}
                       <div class="">
                           <span class="text-danger small">{{ field.errors }}</span>

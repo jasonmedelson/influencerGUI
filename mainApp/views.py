@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
+from .forms import InfluencerCreateForm
 from django import forms
 
 def index(request):
@@ -107,7 +108,7 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-class InfluencerCreateForm(forms.ModelForm):
+class InfluencerCreateForm2(forms.ModelForm):
 
     class Meta:
         model = Influencer
@@ -131,21 +132,33 @@ class InfluencerCreateForm(forms.ModelForm):
             'events': forms.CheckboxSelectMultiple(),
         }
 
-class InfluencerCreate(CreateView):
-    temp_search = forms.TextInput()
-    model = Influencer
-    form_class = InfluencerCreateForm
-    success_url = reverse_lazy('index')
-    def form_valid(self, form):
-        influencer = form.save(commit=False)
-        influencer.user = self.request.user
-        influencer.save()
-        return redirect('index')
+def InfluencerCreate(request):
+    if request.method == 'POST':
+        form = InfluencerCreateForm( request.POST,user = request.user,)
+        if form.is_valid():
+            influencer = form.save(commit=False)
+            influencer.user = request.user
+            influencer.save()
+            return redirect('index')
+    else:
+        form = InfluencerCreateForm(request.user)
+    return render(request, 'mainApp/influencer_form.html', {'form': form})
 
+
+# class InfluencerCreate(CreateView):
+#     temp_search = forms.TextInput()
+#     model = Influencer
+#     form_class = InfluencerCreateForm
+#     success_url = reverse_lazy('index')
+#     def form_valid(self, form):
+#         influencer = form.save(commit=False)
+#         influencer.user = self.request.user
+#         influencer.save()
+#         return redirect('index')
 
 class InfluencerUpdate(UpdateView):
     model = Influencer
-    form_class = InfluencerCreateForm
+    form_class = InfluencerCreateForm2
 
 
 class InfluencerDelete(DeleteView):
@@ -159,6 +172,11 @@ class TagCreate(CreateView):
     'tag_name'
     ]
     success_url = reverse_lazy('index')
+    def form_valid(self, form):
+        tagForm = form.save(commit=False)
+        tagForm.tag_user = self.request.user
+        tagForm.save()
+        return redirect('index')
 
 
 class TagUpdate(UpdateView):

@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import InfluencerCreateForm, TagFormCSV
+from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV
 from django import forms
 from django.utils.html import strip_tags
 
@@ -206,9 +206,6 @@ def TagCreateCSV(request):
                     new_tag = Tags.objects.create(tag_name = tag, tag_user = request.user)
                     new_tag.save
                     created_tags.append(tag)
-                    print(tag,"Tag Created")
-                else:
-                    print(tag,"did exist")
             return render(
                             request,
                             'mainApp/tag_csv_form.html',
@@ -243,6 +240,33 @@ class EventCreate(CreateView):
         eventForm.save()
         return redirect('index')
 
+def EventCreateCSV(request):
+    form = EventFormCSV()
+    if request.method == 'POST':
+        form = EventFormCSV(request.POST)
+        if form.is_valid():
+            data = form['seperate_events_with_commas']
+            stripped_data = strip_tags(data).strip()
+            event_array = stripped_data.split(",")
+            created_events = []
+            for event in event_array:
+                event = event.strip()
+                query = Events.objects.filter(event_name=event )
+                query = query.filter(event_user=request.user)
+                exists = len(query)
+                if not exists:
+                    new_event = Events.objects.create(event_name = event, event_user = request.user)
+                    new_event.save
+                    created_events.append(event)
+            return render(
+                            request,
+                            'mainApp/event_csv_form.html',
+                            {
+                                'form':form,
+                                'created':created_events
+                            }
+                        )
+    return render(request, 'mainApp/event_csv_form.html', {'form':form})
 
 class EventUpdate(UpdateView):
     model = Events

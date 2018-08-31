@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-4"></div>
+          <div class="panel-body col-4  mt-4">
+              <h2 class="panel-head ">Create New Event With CSV</h2>
+              <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {{form}}
+                  <div class="form-group">
+                      <div class="">
+                          <button type="submit" class="btn btn-success submit-form">Submit</button>
+                      </div>
+                  </div>
+              </form>
+              {% if created %}
+                <h4 class="mt-3 mb-1 mx-auto text-center">Events Created</h4>
+                <ul style="list-style-type:none; padding:0">
+                  {% for event in created %}
+                    <li class="my-1">
+                      <button type="button" style="display:block; margin:auto" class="btn btn-info">{{event}}</button>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+          </div>
+          <div class="col-4"></div>
+        </div>
+    </div>
+{% endblock %}

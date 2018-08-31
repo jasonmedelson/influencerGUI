@@ -34,3 +34,6 @@ class InfluencerCreateForm(forms.ModelForm):
 
 class TagFormCSV(forms.Form):
     seperate_tags_with_commas = forms.CharField(widget=forms.Textarea)
+
+class EventFormCSV(forms.Form):
+    seperate_events_with_commas = forms.CharField(widget=forms.Textarea)

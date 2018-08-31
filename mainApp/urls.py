@@ -15,6 +15,7 @@ urlpatterns = [
     path('tag/<int:pk>/', views.TagUpdate.as_view(), name='tag-update'),
     path('tag/<int:pk>/delete/', views.TagDelete.as_view(), name='tag-delete'),
     path('event/add/', views.EventCreate.as_view(), name='event-add'),
+    path('event/add/csv', views.EventCreateCSV, name='event-add-csv'),
     path('event/<int:pk>/', views.EventUpdate.as_view(), name='event-update'),
     path('event/<int:pk>/delete/', views.EventDelete.as_view(), name='event-delete'),
 

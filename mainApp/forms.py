@@ -31,3 +31,6 @@ class InfluencerCreateForm(forms.ModelForm):
         super(InfluencerCreateForm, self).__init__(*args, **kwargs)
         self.fields['tags'].queryset = Tags.objects.filter(tag_user=user)
         self.fields['events'].queryset = Events.objects.filter(event_user=user)
+
+class TagFormCSV(forms.Form):
+    seperate_tags_with_commas = forms.CharField(widget=forms.Textarea)

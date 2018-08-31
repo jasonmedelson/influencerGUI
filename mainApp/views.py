@@ -5,8 +5,9 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import InfluencerCreateForm
+from .forms import InfluencerCreateForm, TagFormCSV
 from django import forms
+from django.utils.html import strip_tags
 
 def index(request):
     username = None
@@ -187,7 +188,36 @@ class TagCreate(CreateView):
         tagForm.save()
         return redirect('index')
 
-
+def TagCreateCSV(request):
+    form = TagFormCSV()
+    if request.method == 'POST':
+        form = TagFormCSV(request.POST)
+        if form.is_valid():
+            data = form['seperate_tags_with_commas']
+            stripped_data = strip_tags(data).strip()
+            tag_array = stripped_data.split(",")
+            created_tags = []
+            for tag in tag_array:
+                tag = tag.strip()
+                query = Tags.objects.filter(tag_name=tag )
+                query = query.filter(tag_user=request.user)
+                exists = len(query)
+                if not exists:
+                    new_tag = Tags.objects.create(tag_name = tag, tag_user = request.user)
+                    new_tag.save
+                    created_tags.append(tag)
+                    print(tag,"Tag Created")
+                else:
+                    print(tag,"did exist")
+            return render(
+                            request,
+                            'mainApp/tag_csv_form.html',
+                            {
+                                'form':form,
+                                'created':created_tags
+                            }
+                        )
+    return render(request, 'mainApp/tag_csv_form.html', {'form':form})
 class TagUpdate(UpdateView):
     model = Tags
     fields = [

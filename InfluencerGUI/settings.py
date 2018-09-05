@@ -140,6 +140,11 @@ DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Django security check
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER= True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 # Allow all host headers
 ALLOWED_HOSTS = ['.herokuapp.com']
 

@@ -36,7 +36,11 @@
           {% for a,b,c in info %}
               <tr>
                   <td class="text" scope="row">{{ a }}</td>
-                  <td class="text">{{ b }}</td>
+                  <td class="text">
+                  {% for item, link in b %}
+                    <a href="{{link}}">{{item}},</a>
+                  {% endfor %}
+                  </td>
                   <td><a href="{{c.get_absolute_url}}" class="btn btn-primary active" role="button" aria-pressed="true">Edit List</a></td>
               </tr>
           {% endfor %}

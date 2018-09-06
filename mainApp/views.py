@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV
 from django import forms
 from django.utils.html import strip_tags
+from django.contrib import messages
 
 def index(request):
     username = None
@@ -184,9 +185,15 @@ class TagCreate(CreateView):
     success_url = reverse_lazy('index')
     def form_valid(self, form):
         tagForm = form.save(commit=False)
-        tagForm.tag_user = self.request.user
-        tagForm.save()
-        return redirect('index')
+        check = tagForm.tag_name
+        query = Tags.objects.filter(tag_name=check,tag_user = self.request.user)
+        obj, created = Tags.objects.get_or_create(tag_name = check, tag_user = self.request.user)
+        if not created:
+            print(obj.get_absolute_url())
+            messages.add_message(self.request, messages.INFO, "Test Message")
+            return redirect(obj.get_absolute_url())
+        else:
+            return redirect('index')
 
 def TagCreateCSV(request):
     form = TagFormCSV()
@@ -199,6 +206,8 @@ def TagCreateCSV(request):
             created_tags = []
             for tag in tag_array:
                 tag = tag.strip()
+                if tag == '':
+                    continue
                 query = Tags.objects.filter(tag_name=tag )
                 query = query.filter(tag_user=request.user)
                 exists = len(query)
@@ -251,6 +260,8 @@ def EventCreateCSV(request):
             created_events = []
             for event in event_array:
                 event = event.strip()
+                if event == '':
+                    continue
                 query = Events.objects.filter(event_name=event )
                 query = query.filter(event_user=request.user)
                 exists = len(query)
@@ -292,12 +303,18 @@ def lists(request):
     try:
         for number in range(len(all_lists)):
             Name.append(all_lists[number].list_name)
-            hold = ""
+            i_name = []
+            i_link = []
             list_influencers = all_lists[number].influencers.all()
             for item in list_influencers:
-                hold += item.influencer_name + ', '
-            hold = hold[:-2]
-            influencers.append(hold)
+                i_name.append(item.influencer_name)
+                i_link.append(item.get_absolute_url)
+            i_data = zip(
+                i_name,
+                i_link
+            )
+            # hold = hold[:-2]
+            influencers.append(i_data)
             Links.append(all_lists[number])
     except:
         Name.append('Error')

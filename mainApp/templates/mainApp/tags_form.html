@@ -4,7 +4,9 @@
         <div class="row">
           <div class="col-4"></div>
           <div class="panel-body col-4  mt-4">
-              <h2 class="panel-head ">Create New Tag</h2>
+              <h2 class="panel-head ">
+                {% if messages %}Edit{% else %}New{% endif %} Tag
+              </h2>
               <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   {% for field in form %}

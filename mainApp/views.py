@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from mainApp.models import Influencer, Events, Tags
+from mainApp.models import Influencer, Events, Tags, List
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -279,11 +279,34 @@ class EventDelete(DeleteView):
     template_name = 'delete.html'
     model = Events
     success_url = reverse_lazy('index')
-#
-# class TagAutoComplete(autocomplete.Select2QuerySetView):
-#     def get_queryset(self):
-#         qs = Tags.objects.all()
-#
-#         if self.q:
-#             qs = qs.filter(tag_name__istartswith=self.q)
-#         return qs
+
+def lists(request):
+    username = None
+    if request.user.is_authenticated:
+        username = request.user
+        userid = request.user.id
+        all_lists = List.objects.filter(user = userid)
+    Name = []
+    influencers = []
+    Links = []
+    try:
+        for number in range(len(all_lists)):
+            Name.append(all_lists[number].list_name)
+            hold = ""
+            list_influencers = all_lists[number].influencers.all()
+            for item in list_influencers:
+                hold += item.influencer_name + ', '
+            hold = hold[:-2]
+            influencers.append(hold)
+            Links.append('#')
+    except:
+        Name.append('Error')
+        influencers.append('Error')
+        Links.append('Error')
+    zipped = zip(
+        Name,
+        influencers,
+        Links
+        )
+
+    return render(request,'list-home.html',context={'info':zipped})

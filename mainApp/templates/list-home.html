@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{%block body%}
+  <div class="container-fluid pt-2">
+      {% if user.is_authenticated %}
+          <div class="row search-row ">
+            <div class="col-7 main-content">
+              <h2>{{ user.get_username|title }}'s Lists </h2>
+            </div>
+            <div class="col-5 ">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <select class="custom-select" id="inputGroupSelect01">
+                    <option selected value="0">All Fields</option>
+                    <option value="1">List Name</option>
+                    <option value="1">Influencer</option>
+                  </select>
+                </div>
+                <input type="text" id="myInputTextField" class="form-control mr-sm-1 ml-sm-1" aria-label="Text input with dropdown button">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+              </div>
+            </div>
+          </div>
+      <!-- End of Search row -->
+      <div class="data-table">
+        <table id="myTable" class='influencer-table mt-2 table table-hover display'>
+
+          <thead class="thead-dark">
+              <tr>
+                  <th scope="col">Name</th>  <!-- a -->
+                  <th scope="col">Influencers</th> <!-- b -->
+                  <th scope="col">List Link</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for a,b,c in info %}
+              <tr>
+                  <td class="text" scope="row">{{ a }}</td>
+                  <td class="text">{{ b }}</td>
+                  <td><a href="{{c}}" class="btn btn-primary active" role="button" aria-pressed="true">Edit Influencer</a></td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+      </div>
+      {% else %}
+          <h1 class="d-block text-center mt-4">Please Login</h1>
+      {% endif %}
+  </div>
+{%endblock%}

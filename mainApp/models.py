@@ -4,6 +4,7 @@ from django.urls import reverse
 import uuid
 # Create your models here.
 
+
 class Tags(models.Model):
     tag_name = models.CharField(max_length=40)
     tag_user = models.ForeignKey(User,on_delete=models.CASCADE,)
@@ -22,7 +23,9 @@ class Events(models.Model):
     event_user = models.ForeignKey(User,on_delete=models.CASCADE,)
     def __str__(self):
         return self.event_name
-
+    def get_absolute_url(self):
+        return reverse('evemt-update', kwargs={'pk': self.id})
+        1
     class Meta:
 
         ordering = ('event_name',)
@@ -102,3 +105,15 @@ class Influencer(models.Model):
     class Meta:
 
         ordering = ('influencer_name',)
+
+class List(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,)
+    list_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    list_name = models.CharField(max_length=50)
+    influencers = models.ManyToManyField(Influencer,blank=True)
+
+    def __str__(self):
+        return self.list_name
+
+    def get_absolute_url(self):
+        return reverse('list-update', kwargs={'pk': self.list_id})

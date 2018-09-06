@@ -298,7 +298,7 @@ def lists(request):
                 hold += item.influencer_name + ', '
             hold = hold[:-2]
             influencers.append(hold)
-            Links.append('#')
+            Links.append(all_lists[number])
     except:
         Name.append('Error')
         influencers.append('Error')
@@ -306,7 +306,28 @@ def lists(request):
     zipped = zip(
         Name,
         influencers,
-        Links
+        Links,
         )
 
-    return render(request,'list-home.html',context={'info':zipped})
+    return render(request,'mainApp/list-home.html',context={'info':zipped})
+
+class ListCreate(CreateView):
+    model = List
+    fields = [
+    'list_name',
+    'influencers',
+    ]
+    success_url = reverse_lazy('index')
+    def form_valid(self, form):
+        listForm = form.save(commit=False)
+        listForm.user = self.request.user
+        listForm.save()
+        return redirect('index')
+
+class ListUpdate(UpdateView):
+    model = List
+    fields = [
+    'list_name',
+    'influencers'
+    ]
+    success_url = reverse_lazy('lists-home')

@@ -37,7 +37,7 @@
               <tr>
                   <td class="text" scope="row">{{ a }}</td>
                   <td class="text">{{ b }}</td>
-                  <td><a href="{{c}}" class="btn btn-primary active" role="button" aria-pressed="true">Edit Influencer</a></td>
+                  <td><a href="{{c.get_absolute_url}}" class="btn btn-primary active" role="button" aria-pressed="true">Edit List</a></td>
               </tr>
           {% endfor %}
           </tbody>

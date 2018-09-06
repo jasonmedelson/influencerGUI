@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-4"></div>
+          <div class="panel-body col-4  mt-4">
+              <h2 class="panel-head ">Create New Tag</h2>
+              <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% for field in form %}
+                      <div class="form-group row my-4">
+                          <div class="col-12">
+                              <span class="text-danger small">{{ field.errors }}</span>
+                          </div>
+                          <label class="form-label ml-2 col-3 text-center">{{ field.label_tag|title }}</label>
+                          <div class="tag-field col mr-4">{{ field }}</div>
+                      </div>
+
+                  {% endfor %}
+                  <div class="form-group">
+                      <div class="">
+                          <button type="submit" class="btn btn-success submit-form">Submit</button>
+                          <a class="btn btn-info submit-form mt-2" href="{% url 'tag-add-csv'%}" role="button">Add Multiple Tags</a>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="col-4"></div>
+        </div>
+    </div>
+{% endblock %}

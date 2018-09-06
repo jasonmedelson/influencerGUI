@@ -19,5 +19,8 @@ urlpatterns = [
     path('event/<int:pk>/', views.EventUpdate.as_view(), name='event-update'),
     path('event/<int:pk>/delete/', views.EventDelete.as_view(), name='event-delete'),
     path('list/', views.lists, name='lists-home'),
+    path('list/add', views.ListCreate.as_view(), name='lists-add'),
+    path('list/<uuid:pk>/', views.ListUpdate.as_view(), name='list-update'),
+    # path('list/<int:pk>/delete/', views.ListDelete.as_view(), name='list-delete'),
 
 ]

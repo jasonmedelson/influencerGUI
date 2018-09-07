@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from mainApp.models import Influencer, Events, Tags, List
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV
+from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm
 from django import forms
 from django.utils.html import strip_tags
 from django.contrib import messages
@@ -190,7 +190,6 @@ class TagCreate(CreateView):
         obj, created = Tags.objects.get_or_create(tag_name = check, tag_user = self.request.user)
         if not created:
             print(obj.get_absolute_url())
-            messages.add_message(self.request, messages.INFO, "Test Message")
             return redirect(obj.get_absolute_url())
         else:
             return redirect('index')
@@ -224,12 +223,31 @@ def TagCreateCSV(request):
                             }
                         )
     return render(request, 'mainApp/tag_csv_form.html', {'form':form})
-class TagUpdate(UpdateView):
-    model = Tags
-    fields = [
-    'tag_name'
-    ]
-    success_url = reverse_lazy('index')
+
+def TagUpdate(request, pk):
+    tag = get_object_or_404(Tags, tag_user=request.user, id=pk)
+    exists = False
+    if request.POST:
+        form = TagForm(request.POST, instance=tag)
+        test = form['tag_name'].value()
+        try:
+            check = Tags.objects.get(tag_user=request.user, tag_name=test)
+            exists = test
+        except:
+            pass
+        if not exists:
+            if form.is_valid():
+                form.save()
+                return redirect('index')
+    test = tag.tag_name
+    form = TagForm(instance=tag)
+    print(form)
+    context = { 'form':form,
+                'id':pk,
+                'test':test,
+                'exists':exists}
+    return render(request,'mainApp/tags_update.html',context)
+
 
 class TagDelete(DeleteView):
     template_name = 'delete.html'

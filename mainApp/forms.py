@@ -37,3 +37,10 @@ class TagFormCSV(forms.Form):
 
 class EventFormCSV(forms.Form):
     seperate_events_with_commas = forms.CharField(widget=forms.Textarea)
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tags
+        fields = [
+        'tag_name'
+        ]

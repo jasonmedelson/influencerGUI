@@ -5,12 +5,19 @@
           <div class="col-4"></div>
           <div class="panel-body col-4  mt-4">
               <div class="panel-head ">
-                  <h2>Create New Tag</h2>
+                  <h2>Update Tag #{{id}}</h2>
+              </div>
+              {% if exists %}
+                <h5 class="text-center text-danger">{{exists}} is already a Tag</h5>
+              {% endif %}
+              <div class='form-group row my-4'>
+                <label class="form-label ml-2 col-3 text-center">Original</label>
+                <div class="tag-field col mr-4"><input type="text" placeholder={{test}} readonly /></div>
               </div>
               <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   {% for field in form %}
-                      <div class="form-group row my-4">
+                      <div class="form-group row mb-4 mt-1">
                           <div class="col-12">
                               <span class="text-danger small">{{ field.errors }}</span>
                           </div>

@@ -4,8 +4,8 @@
   <div class="container-fluid pt-2">
       {% if user.is_authenticated %}
           <div class="row search-row ">
-            <div class="col-7 main-content">
-              <h2>{{ user.get_username|title }}'s Lists </h2>
+            <div class="col-7 pr-0 main-content">
+              <h2 >{{ user.get_username|title }}'s Lists </h2>
             </div>
             <div class="col-5 ">
               <div class="input-group">
@@ -17,7 +17,7 @@
                   </select>
                 </div>
                 <input type="text" id="myInputTextField" class="form-control mr-sm-1 ml-sm-1" aria-label="Text input with dropdown button">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                <a class="float-right btn btn-success text-white" href="{% url 'lists-add'%}">Create New List</a>
               </div>
             </div>
           </div>

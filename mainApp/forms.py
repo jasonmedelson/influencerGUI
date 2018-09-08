@@ -1,5 +1,5 @@
 from django import forms
-from .models import Influencer, Tags, Events
+from .models import Influencer, Tags, Events, List
 
 class InfluencerCreateForm(forms.ModelForm):
 
@@ -51,3 +51,17 @@ class EventForm(forms.ModelForm):
         fields = [
         'event_name'
         ]
+
+class ListCreateForm(forms.ModelForm):
+    class Meta:
+        model = List
+        fields = [
+        'list_name',
+        'list_influencers',
+        ]
+        widgets = {
+        'list_influencers': forms.CheckboxSelectMultiple(),
+        }
+    def __init__(self, user, *args, **kwargs):
+        super(ListCreateForm, self).__init__(*args, **kwargs)
+        # self.fields['list_influencers'].queryset = Influencer.objects.filter(user=user)

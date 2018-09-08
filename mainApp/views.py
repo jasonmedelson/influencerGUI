@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm, EventForm
+from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm, EventForm, ListCreateForm
 from django import forms
 from django.utils.html import strip_tags
 from django.contrib import messages
@@ -296,7 +296,7 @@ def lists(request):
     if request.user.is_authenticated:
         username = request.user
         userid = request.user.id
-        all_lists = List.objects.filter(user = userid)
+        all_lists = List.objects.filter(list_user = userid)
     Name = []
     influencers = []
     Links = []
@@ -305,8 +305,8 @@ def lists(request):
             Name.append(all_lists[number].list_name)
             i_name = []
             i_link = []
-            list_influencers = all_lists[number].influencers.all()
-            for item in list_influencers:
+            list_influencer = all_lists[number].list_influencers.all()
+            for item in list_influencer:
                 i_name.append(item.influencer_name)
                 i_link.append(item.get_absolute_url)
             i_data = zip(
@@ -328,18 +328,58 @@ def lists(request):
 
     return render(request,'mainApp/list-home.html',context={'info':zipped})
 
-class ListCreate(CreateView):
-    model = List
-    fields = [
-    'list_name',
-    'influencers',
-    ]
-    success_url = reverse_lazy('index')
-    def form_valid(self, form):
-        listForm = form.save(commit=False)
-        listForm.user = self.request.user
-        listForm.save()
-        return redirect('index')
+def ListCreate(request):
+    if request.method == 'POST':
+        form = ListCreateForm(request.user, request.POST)
+        if form.is_valid():
+            people = form.save(commit=False)
+            people.list_user = request.user
+            print('p',people.list_user)
+            people.save()
+            form.save_m2m()
+            return redirect('lists-home')
+    else:
+        form = ListCreateForm(request.user)
+    return render(request, 'mainApp/list_form.html', {'form': form})
+#
+# class ListCreate(CreateView):
+#     model = List
+#     fields = [
+#     'list_name',
+#     'list_influencers',
+#     ]
+#     success_url = reverse_lazy('lists-home')
+#     def form_valid(self, form):
+#         print('f', form.cleaned_data)
+#         d = form.cleaned_data
+#         d = d['list_influencers']
+#         print('d',d)
+#         listForm = form.save(commit=False)
+#         listForm.list_influencers.set(d)
+#         listForm.list_user = request.user
+#         print('c', listForm)
+#         # obj, created = Events.objects.get_or_create(event_name = check, event_user = self.request.user)
+#         # if not created:
+#         #     print(obj.get_absolute_url())
+#         #     return redirect(obj.get_absolute_url())
+#         # else:
+#         return redirect('lists-home')
+
+
+# class ListCreate(CreateView):
+#     model = List
+#     form_class = ListCreateForm
+#     # fields = [
+#     # 'list_influencers',
+#     # 'list_name',
+#     # # 'list_user'
+#     # ]
+#     def form_valid(self, form):
+#         influencer = form.save(commit=False)
+#         influencer.list_user = self.request.user
+#         influencer.save()
+#         form.save_m2m()
+#         return redirect('lists-home')
 
 class ListUpdate(UpdateView):
     model = List

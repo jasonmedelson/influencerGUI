@@ -24,7 +24,7 @@ class Events(models.Model):
     def __str__(self):
         return self.event_name
     def get_absolute_url(self):
-        return reverse('evemt-update', kwargs={'pk': self.id})
+        return reverse('event-update', kwargs={'pk': self.id})
         1
     class Meta:
 

@@ -4,11 +4,20 @@
         <div class="row">
           <div class="col-4"></div>
           <div class="panel-body col-4  mt-4">
-              <h2 class="panel-head ">Create New List</h2>
+              <div class="panel-head ">
+                  <h2>Update Event #{{id}}</h2>
+              </div>
+              {% if exists %}
+                <h5 class="text-center text-danger">{{exists}} is already an Event</h5>
+              {% endif %}
+              <div class='form-group row my-4'>
+                <label class="form-label ml-2 col-3 text-center">Original</label>
+                <div class="tag-field col mr-4"><input type="text" placeholder={{test}} readonly /></div>
+              </div>
               <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   {% for field in form %}
-                      <div class="form-group row my-4">
+                      <div class="form-group row mb-4 mt-1">
                           <div class="col-12">
                               <span class="text-danger small">{{ field.errors }}</span>
                           </div>
@@ -20,7 +29,7 @@
                   <div class="form-group">
                       <div class="">
                           <button type="submit" class="btn btn-success submit-form">Submit</button>
-                          <a class="btn btn-info submit-form mt-2" href="{% url 'tag-add-csv'%}" role="button">Add Multiple Tags</a>
+                          <a class="btn btn-info submit-form mt-2" href="{% url 'event-add-csv'%}" role="button">Add Multiple Events</a>
                       </div>
                   </div>
               </form>

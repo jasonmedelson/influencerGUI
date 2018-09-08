@@ -44,3 +44,10 @@ class TagForm(forms.ModelForm):
         fields = [
         'tag_name'
         ]
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Events
+        fields = [
+        'event_name'
+        ]

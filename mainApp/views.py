@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm
+from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm, EventForm
 from django import forms
 from django.utils.html import strip_tags
 from django.contrib import messages
@@ -110,30 +110,6 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-class InfluencerCreateForm2(forms.ModelForm):
-
-    class Meta:
-        model = Influencer
-        fields = [
-        'influencer_name',
-        'email',
-        'phone',
-        'twitter',
-        'youtube',
-        'twitch',
-        'shirt',
-        'country',
-        'mailing_address',
-        'notes',
-        'tags',
-        'events',
-        ]
-        widgets = {
-            # 'tags': FilteredSelectMultiple("Tags",is_stacked=False,choices=Tags.objects.all()),
-            'tags': forms.CheckboxSelectMultiple(),
-            'events': forms.CheckboxSelectMultiple(),
-        }
-
 def InfluencerCreate(request):
     if request.method == 'POST':
         form = InfluencerCreateForm( request.user, request.POST, )
@@ -147,20 +123,6 @@ def InfluencerCreate(request):
     return render(request, 'mainApp/influencer_form.html', {'form': form})
 
 
-# class InfluencerCreate(CreateView):
-#     temp_search = forms.TextInput()
-#     model = Influencer
-#     form_class = InfluencerCreateForm
-#     success_url = reverse_lazy('index')
-#     def form_valid(self, form):
-#         influencer = form.save(commit=False)
-#         influencer.user = self.request.user
-#         influencer.save()
-#         return redirect('index')
-
-# class InfluencerUpdate(UpdateView):
-#     model = Influencer
-#     form_class = InfluencerCreateForm2
 def InfluencerUpdate(request, pk):
     object = Influencer.objects.get(id = pk)
     if request.method == 'POST':
@@ -186,7 +148,6 @@ class TagCreate(CreateView):
     def form_valid(self, form):
         tagForm = form.save(commit=False)
         check = tagForm.tag_name
-        query = Tags.objects.filter(tag_name=check,tag_user = self.request.user)
         obj, created = Tags.objects.get_or_create(tag_name = check, tag_user = self.request.user)
         if not created:
             print(obj.get_absolute_url())
@@ -263,9 +224,13 @@ class EventCreate(CreateView):
     success_url = reverse_lazy('index')
     def form_valid(self, form):
         eventForm = form.save(commit=False)
-        eventForm.event_user = self.request.user
-        eventForm.save()
-        return redirect('index')
+        check = eventForm.event_name
+        obj, created = Events.objects.get_or_create(event_name = check, event_user = self.request.user)
+        if not created:
+            print(obj.get_absolute_url())
+            return redirect(obj.get_absolute_url())
+        else:
+            return redirect('index')
 
 def EventCreateCSV(request):
     form = EventFormCSV()
@@ -297,12 +262,29 @@ def EventCreateCSV(request):
                         )
     return render(request, 'mainApp/event_csv_form.html', {'form':form})
 
-class EventUpdate(UpdateView):
-    model = Events
-    fields = [
-    'event_name'
-    ]
-    success_url = reverse_lazy('index')
+def EventUpdate(request, pk):
+    event = get_object_or_404(Events, event_user=request.user, id=pk)
+    exists = False
+    if request.POST:
+        form = EventForm(request.POST, instance=event)
+        test = form['event_name'].value()
+        try:
+            check = Events.objects.get(event_user=request.user, event_name=test)
+            exists = test
+        except:
+            pass
+        if not exists:
+            if form.is_valid():
+                form.save()
+                return redirect('index')
+    test = event.event_name
+    form = EventForm(instance=event)
+    print(form)
+    context = { 'form':form,
+                'id':pk,
+                'test':test,
+                'exists':exists}
+    return render(request,'mainApp/events_update.html',context)
 
 class EventDelete(DeleteView):
     template_name = 'delete.html'

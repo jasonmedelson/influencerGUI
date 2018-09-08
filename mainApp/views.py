@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm, EventForm
+from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm, EventForm,ListForm
 from django import forms
 from django.utils.html import strip_tags
 from django.contrib import messages
@@ -327,24 +327,29 @@ def lists(request):
         )
 
     return render(request,'mainApp/list-home.html',context={'info':zipped})
+def ListCreate(request):
+    if request.method == 'POST':
+        form = ListForm( request.user, request.POST, )
+        if form.is_valid():
+            list = form.save(commit=False)
+            list.user = request.user
+            list.save()
+            return redirect('lists-home')
+    else:
+        form = ListForm(request.user)
+    return render(request, 'mainApp/list_form.html', {'form': form})
 
-class ListCreate(CreateView):
-    model = List
-    fields = [
-    'list_name',
-    'influencers',
-    ]
-    success_url = reverse_lazy('index')
-    def form_valid(self, form):
-        listForm = form.save(commit=False)
-        listForm.user = self.request.user
-        listForm.save()
-        return redirect('index')
+# class ListCreate(CreateView):
+#     model = List
+#     form_class = ListForm
+#     success_url = reverse_lazy('index')
+#     def form_valid(self, form):
+#         listForm = form.save(commit=False)
+#         listForm.user = self.request.user
+#         listForm.save()
+#         return redirect('index')
 
 class ListUpdate(UpdateView):
     model = List
-    fields = [
-    'list_name',
-    'influencers'
-    ]
+    form_class = ListForm
     success_url = reverse_lazy('lists-home')

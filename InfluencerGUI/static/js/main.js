@@ -93,6 +93,7 @@ $(document).ready(function() {
   })
 
 })
+
 function tags_filter(){
   var item;
   var input = document.getElementById('search-tags');
@@ -108,6 +109,7 @@ function tags_filter(){
     }
   }
 }
+
 function events_filter(){
   var item;
   var input = document.getElementById('search-events');
@@ -123,9 +125,29 @@ function events_filter(){
     }
   }
 }
+function influencers_filter(){
+  var item;
+  var input = document.getElementById('search-influencers');
+  var filter = input.value.toUpperCase();
+  var list_items = document.getElementById("id_influencers").childNodes
+  for(var i=1; i<list_items.length; i+=2){
+    item = list_items[i];
+    if(item.textContent.toUpperCase().indexOf(filter) == -1){
+      list_items[i].style.display = "none";
+    }
+    else{
+      list_items[i].style.display = '';
+    }
+  }
+}
+
 if ( $( "#id_tags" ).length ) {
     $( "#id_tags" ).before("<input type='text' id='search-tags' onkeyup='tags_filter()' placeholder='Search for Tags'></input>");
 }
 if ( $( "#id_events" ).length ) {
     $( "#id_events" ).before("<input type='text' id='search-events' onkeyup='events_filter()' placeholder='Search for Events'></input>");
+}
+
+if ( $( "#id_influencers" ).length ) {
+    $( "#id_influencers" ).before("<input type='text' id='search-influencers' class='mb-2' onkeyup='influencers_filter()' placeholder='Search for Influencers'></input>");
 }

@@ -367,6 +367,6 @@ class ListUpdate(UpdateView):
     model = List
     fields = [
     'list_name',
-    'influencers'
+    'list_influencers'
     ]
     success_url = reverse_lazy('lists-home')

@@ -17,27 +17,33 @@ def index(request):
         userid = request.user.id
         all_influencers = Influencer.objects.filter(user = userid)
 
-    Name =[]
+    Handle =[]
+    Name = []
     Email =[]
     Twitch =[]
     Twitter =[]
+    Youtube =[]
+    Mixer =[]
     Country =[]
     Shirt =[]
     Edit =[]
     Last_Updated =[]
     Mailing_Address =[]
     Phone =[]
-    Youtube =[]
     tags =[]
     events =[]
     influencer = []
 
     try:
         for number in range(len(all_influencers)):
-            Name.append(all_influencers[number].influencer_name)
+            Handle.append(all_influencers[number].influencer_handle)
+            Name.append(all_influencers[number].legal_name)
             Email.append(all_influencers[number].email)
+            Phone.append(all_influencers[number].phone)
             Twitch.append(all_influencers[number].twitch)
             Twitter.append(all_influencers[number].twitter)
+            Youtube.append(all_influencers[number].youtube)
+            Mixer.append(all_influencers[number].mixer)
             Country.append(all_influencers[number].country)
             Shirt.append(all_influencers[number].shirt)
             influencer.append(all_influencers[number])
@@ -45,8 +51,6 @@ def index(request):
             timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
             Last_Updated.append(timestamp)
             Mailing_Address.append(all_influencers[number].mailing_address)
-            Phone.append(all_influencers[number].phone)
-            Youtube.append(all_influencers[number].youtube)
             hold = ""
             i_tags = all_influencers[number].tags.all()
             for item in i_tags:
@@ -60,21 +64,24 @@ def index(request):
             hold = hold[:-2]
             events.append(hold)
     except:
+        Handle.append('Error')
         Name.append('Error')
         Email.append('Error')
         Twitch.append('Error')
         Twitter.append('Error')
+        Youtube.append('Error')
+        Mixer.append('Error')
         Country.append('Error')
         Shirt.append('Error')
         Last_Updated.append('Error')
         Mailing_Address.append('Error')
         Phone.append('Error')
-        Youtube.append('Error')
         tags.append('Error')
         events.append('Error')
         influencer = 'Error'
 
     zipped = zip(
+        Handle,
         Name,
         Email,
         Twitch,
@@ -86,6 +93,7 @@ def index(request):
         Mailing_Address,
         Phone,
         Youtube,
+        Mixer,
         tags,
         events,
         )
@@ -310,7 +318,7 @@ def lists(request):
             i_link = []
             list_influencer = all_lists[number].list_influencers.all()
             for item in list_influencer:
-                i_name.append(item.influencer_name)
+                i_name.append(item.influencer_handle)
                 i_link.append(item.get_absolute_url)
             i_data = zip(
                 i_name,
@@ -323,6 +331,7 @@ def lists(request):
         Name.append('Error')
         influencers.append('Error')
         Links.append('Error')
+    print(Name,influencers,Links)
     zipped = zip(
         Name,
         influencers,

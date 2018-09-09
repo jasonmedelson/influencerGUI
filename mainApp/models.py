@@ -68,7 +68,8 @@ class Influencer(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    influencer_name = models.CharField(max_length=50)
+    influencer_handle = models.CharField(max_length=50)
+    legal_name = models.CharField(max_length=50,blank = True)
     email = models.EmailField(blank = True)
     mailing_address = models.TextField(blank = True)
     phone = models.CharField(max_length=20,blank = True)
@@ -84,20 +85,21 @@ class Influencer(models.Model):
         blank = True,
         default=US
         )
-    twitter = models.URLField(blank = True,)
-    youtube = models.URLField(blank = True,)
-    twitch = models.URLField(blank = True,)
+    twitter = models.CharField(max_length=50, blank = True)
+    youtube = models.CharField(max_length=50, blank = True)
+    twitch = models.CharField(max_length=50, blank = True)
+    mixer = models.CharField(max_length=50, blank = True)
     notes = models.TextField(blank = True,)
     tags = models.ManyToManyField(Tags,blank=True)
     events = models.ManyToManyField(Events,blank=True)
 
     def __str__(self):
-        return self.influencer_name
+        return self.influencer_handle
 
     def get_absolute_url(self):
         return reverse('influencer-update', kwargs={'pk': self.id})
     class Meta:
-        ordering = ('influencer_name',)
+        ordering = ('influencer_handle',)
 
 class List(models.Model):
     list_user = models.ForeignKey(User,on_delete=models.CASCADE,)

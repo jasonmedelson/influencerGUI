@@ -6,12 +6,14 @@ class InfluencerCreateForm(forms.ModelForm):
     class Meta:
         model = Influencer
         fields = [
-        'influencer_name',
+        'influencer_handle',
+        'legal_name',
         'email',
         'phone',
         'twitter',
         'youtube',
         'twitch',
+        'mixer',
         'shirt',
         'country',
         'mailing_address',

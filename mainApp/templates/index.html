@@ -37,13 +37,14 @@
 
           <thead class="thead-dark">
               <tr>
-                  <th scope="col">Name</th>  <!-- a -->
-                  <th scope="col">Email</th> <!-- b -->
-                  <th scope="col">Twitch</th> <!-- c -->
-                  <th scope="col">Twitter</th> <!-- d -->
-                  <th scope="col">Country</th> <!-- e -->
-                  <th scope="col">Shirt</th> <!-- f -->
-                  <th scope="col">Edit</th> <!-- g -->
+                  <th scope="col">Handle</th>  <!-- a -->
+                  <th scope="col">Name</th> <!-- b -->
+                  <th scope="col">Email</th>  <!-- c -->
+                  <th scope="col">Twitch</th>  <!-- d -->
+                  <th scope="col">Twitter</th>  <!-- e -->
+                  <th scope="col">Country</th> <!-- f -->
+                  <th scope="col">Shirt</th> <!-- g -->
+                  <th scope="col">Edit</th> <!--h -->
 
                   <th scope="col" style="display:none">Last Updated</th>
                   <th scope="col" style="display:none">Mailing Address</th>
@@ -56,21 +57,22 @@
               </tr>
           </thead>
           <tbody>
-          {% for a,b,c,d,e,f,g,h,i,j,k,l,m in info %}
+          {% for  Handle,Name,Email,Twitch,Twitter,Country,Shirt,influencer,Last_Updated,Mailing_Address,Phone,Youtube,Mixer,tags,events in info %}
               <tr>
-                  <td class="text" scope="row">{{ a }}</td>
-                  <td class="text">{{ b }}</td>
-                  <td class="text">{{ c }}</td>
-                  <td class="numb">{{ d }}</td>
-                  <td class="numb">{{ e }}</td>
-                  <td class="text">{{ f }}</td>
-                  <td><a href="{{g.get_absolute_url}}" class="btn btn-primary active" role="button" aria-pressed="true">Edit Influencer</a></td>
-                  <td class="text" style="display:none">{{ h }}</td>
-                  <td class="text" style="display:none">{{ i }}</td>
-                  <td class="text" style="display:none">{{ j }}</td>
-                  <td class="text" style="display:none">{{ k }}</td>
-                  <td class="text" style="display:none">{{ l }}</td>
-                  <td class="text" style="display:none">{{ m }}</td>
+                  <td class="text" scope="row">{{ Handle }}</td>
+                  <td class="text">{{ Name }}</td>
+                  <td class="text">{{ Email }}</td>
+                  <td class="numb">{{ Twitch }}</td>
+                  <td class="numb">{{ Twitter }}</td>
+                  <td class="text">{{ Country }}</td>
+                  <td class="text">{{ Shirt }}</td>
+                  <td><a href="{{influencer.get_absolute_url}}" class="btn btn-primary active" role="button" aria-pressed="true">Edit Influencer</a></td>
+                  <td class="text" style="display:none">{{ Last_Updated }}</td>
+                  <td class="text" style="display:none">{{ Mailing_Address }}</td>
+                  <td class="text" style="display:none">{{ Phone }}</td>
+                  <td class="text" style="display:none">{{ Youtube }}</td>
+                  <td class="text" style="display:none">{{ tags }}</td>
+                  <td class="text" style="display:none">{{ events }}</td>
               </tr>
           {% endfor %}
           </tbody>

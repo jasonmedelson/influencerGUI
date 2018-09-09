@@ -147,6 +147,7 @@ class TagCreate(CreateView):
     success_url = reverse_lazy('index')
     def form_valid(self, form):
         tagForm = form.save(commit=False)
+        tagForm.tag_name = tagForm.tag_name.upper()
         check = tagForm.tag_name
         obj, created = Tags.objects.get_or_create(tag_name = check, tag_user = self.request.user)
         if not created:
@@ -166,6 +167,7 @@ def TagCreateCSV(request):
             created_tags = []
             for tag in tag_array:
                 tag = tag.strip()
+                tag = tag.upper()
                 if tag == '':
                     continue
                 query = Tags.objects.filter(tag_name=tag )
@@ -224,7 +226,7 @@ class EventCreate(CreateView):
     success_url = reverse_lazy('index')
     def form_valid(self, form):
         eventForm = form.save(commit=False)
-        check = eventForm.event_name
+        check = eventForm.event_name.upper()
         obj, created = Events.objects.get_or_create(event_name = check, event_user = self.request.user)
         if not created:
             print(obj.get_absolute_url())
@@ -243,6 +245,7 @@ def EventCreateCSV(request):
             created_events = []
             for event in event_array:
                 event = event.strip()
+                event = event.upper()
                 if event == '':
                     continue
                 query = Events.objects.filter(event_name=event )
@@ -333,53 +336,23 @@ def ListCreate(request):
         form = ListCreateForm(request.user, request.POST)
         if form.is_valid():
             people = form.save(commit=False)
-            people.list_user = request.user
-            print('p',people.list_user)
-            people.save()
-            form.save_m2m()
-            return redirect('lists-home')
+            name = people.list_name
+            check = List.objects.filter(list_user = request.user, list_name = name)
+            if not len(check):
+                people.list_user = request.user
+                people.save()
+                form.save_m2m()
+                return redirect('lists-home')
+            else:
+                context = {
+                    'exists':name,
+                    'form': form,
+                }
+                return render(request, 'mainApp/list_form.html', context)
+
     else:
         form = ListCreateForm(request.user)
     return render(request, 'mainApp/list_form.html', {'form': form})
-#
-# class ListCreate(CreateView):
-#     model = List
-#     fields = [
-#     'list_name',
-#     'list_influencers',
-#     ]
-#     success_url = reverse_lazy('lists-home')
-#     def form_valid(self, form):
-#         print('f', form.cleaned_data)
-#         d = form.cleaned_data
-#         d = d['list_influencers']
-#         print('d',d)
-#         listForm = form.save(commit=False)
-#         listForm.list_influencers.set(d)
-#         listForm.list_user = request.user
-#         print('c', listForm)
-#         # obj, created = Events.objects.get_or_create(event_name = check, event_user = self.request.user)
-#         # if not created:
-#         #     print(obj.get_absolute_url())
-#         #     return redirect(obj.get_absolute_url())
-#         # else:
-#         return redirect('lists-home')
-
-
-# class ListCreate(CreateView):
-#     model = List
-#     form_class = ListCreateForm
-#     # fields = [
-#     # 'list_influencers',
-#     # 'list_name',
-#     # # 'list_user'
-#     # ]
-#     def form_valid(self, form):
-#         influencer = form.save(commit=False)
-#         influencer.list_user = self.request.user
-#         influencer.save()
-#         form.save_m2m()
-#         return redirect('lists-home')
 
 class ListUpdate(UpdateView):
     model = List

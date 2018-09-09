@@ -5,6 +5,9 @@
           <div class="col-4"></div>
           <div class="panel-body col-4  mt-4">
               <h2 class="panel-head ">Create New List</h2>
+              {% if exists %}
+                <h5 class="text-center text-danger">{{exists}} is already a List</h5>
+              {% endif %}
               <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   {% for field in form %}

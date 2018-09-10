@@ -140,7 +140,14 @@ def InfluencerUpdate(request, pk):
             return redirect('index')
     else:
         form = InfluencerCreateForm(request.user, instance = object, )
-    return render(request, 'mainApp/influencer_form.html', {'form': form})
+    edit = form['influencer_handle'].value()
+    print('e',edit)
+    context = {
+        'form':form,
+        'edit':edit,
+        'pk':pk
+    }
+    return render(request, 'mainApp/influencer_form.html', context)
 
 class InfluencerDelete(DeleteView):
     template_name = 'delete.html'
@@ -331,7 +338,6 @@ def lists(request):
         Name.append('Error')
         influencers.append('Error')
         Links.append('Error')
-    print(Name,influencers,Links)
     zipped = zip(
         Name,
         influencers,
@@ -363,10 +369,43 @@ def ListCreate(request):
         form = ListCreateForm(request.user)
     return render(request, 'mainApp/list_form.html', {'form': form})
 
-class ListUpdate(UpdateView):
+def ListUpdate(request, pk):
+    list = get_object_or_404(List, list_user=request.user, list_id=pk)
+    update = True
+    exists = False
+    if request.POST:
+        print('11111111111')
+        form = ListCreateForm(request.user,request.POST, instance=list)
+        test = form['list_name'].value()
+        print('t',test)
+        try:
+            check = List.objects.get(list_user=request.user, list_name=test)
+            exists = test
+        except:
+            pass
+        if not exists:
+            if form.is_valid():
+                form.save()
+                return redirect('lists-home')
+    test = list.list_name
+    form = ListCreateForm(request.user, instance=list)
+    print(form)
+    context = { 'form':form,
+                'id':pk,
+                'test':test,
+                'exists':exists,
+                'update':update}
+    return render(request,'mainApp/list_form.html',context)
+
+# class ListUpdate(UpdateView):
+#     model = List
+#     fields = [
+#     'list_name',
+#     'list_influencers'
+#     ]
+#     success_url = reverse_lazy('lists-home')
+
+class ListDelete(DeleteView):
+    template_name = 'delete.html'
     model = List
-    fields = [
-    'list_name',
-    'list_influencers'
-    ]
     success_url = reverse_lazy('lists-home')

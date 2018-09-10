@@ -17,22 +17,23 @@ def index(request):
         userid = request.user.id
         all_influencers = Influencer.objects.filter(user = userid)
 
-    Handle =[]
-    Name = []
-    Email =[]
-    Twitch =[]
-    Twitter =[]
-    Youtube =[]
-    Mixer =[]
-    Country =[]
-    Shirt =[]
-    Edit =[]
-    Last_Updated =[]
-    Mailing_Address =[]
-    Phone =[]
-    tags =[]
-    events =[]
-    influencer = []
+    Handle=[]
+    Name=[]
+    Email=[]
+    Twitch=[]
+    Twitter=[]
+    Youtube=[]
+    Mixer=[]
+    Country=[]
+    Shirt=[]
+    Edit=[]
+    Last_Updated=[]
+    Mailing_Address=[]
+    Phone=[]
+    tags=[]
+    events=[]
+    influencer=[]
+    lists=[]
 
     try:
         for number in range(len(all_influencers)):
@@ -63,6 +64,13 @@ def index(request):
                 hold += item.event_name + ', '
             hold = hold[:-2]
             events.append(hold)
+            query = List.objects.filter(list_influencers__influencer_handle = all_influencers[number].influencer_handle)
+            print('q',query)
+            for item in query:
+                hold += item.list_name + ', '
+            print('h',hold)
+            hold = hold[:-2]
+            lists.append(hold)
     except:
         Handle.append('Error')
         Name.append('Error')
@@ -79,6 +87,7 @@ def index(request):
         tags.append('Error')
         events.append('Error')
         influencer = 'Error'
+        lists.append('Error')
 
     zipped = zip(
         Handle,
@@ -96,6 +105,7 @@ def index(request):
         Mixer,
         tags,
         events,
+        lists,
         )
 
     return render(

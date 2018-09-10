@@ -12,18 +12,21 @@
                 <div class="input-group-prepend">
                   <select class="custom-select" id="inputGroupSelect01">
                     <option selected value="0">All Fields</option>
-                    <option value="1">Name</option>
-                    <option value="2">Email</option>
-                    <option value="3">Twitch</option>
-                    <option value="4">Twitter</option>
-                    <option value="5">Country</option>
-                    <option value="6">Shirt</option>
-                    <option value="7">Updated</option>
-                    <option value="8">Address</option>
-                    <option value="9">Phone</option>
-                    <option value="10">Youtube</option>
-                    <option value="11">Tags</option>
-                    <option value="12">Events</option>
+                    <option value="1">Handle</option>
+                    <option value="2">Name</option>
+                    <option value="3">Email</option>
+                    <option value="4">Twitch</option>
+                    <option value="5">Twitter</option>
+                    <option value="6">Country</option>
+                    <option value="7">Shirt</option>
+                    <option value="8">Updated</option>
+                    <option value="9">Address</option>
+                    <option value="10">Phone</option>
+                    <option value="11">Youtube</option>
+                    <option value="12">Youtube</option>
+                    <option value="13">Tags</option>
+                    <option value="14">Events</option>
+                    <option value="15">Lists</option>
                   </select>
                 </div>
                 <input type="text" id="myInputTextField" class="form-control mr-sm-1 ml-sm-1" aria-label="Text input with dropdown button">
@@ -50,14 +53,16 @@
                   <th scope="col" style="display:none">Mailing Address</th>
                   <th scope="col" style="display:none">Phone</th>
                   <th scope="col" style="display:none">Youtube</th>
+                  <th scope="col" style="display:none">Mixer</th>
                   <th scope="col" style="display:none">Tags</th>
-
                   <th scope="col" style="display:none">Events</th>
+                  <th scope="col" style="display:none">Lists</th>
+
 
               </tr>
           </thead>
           <tbody>
-          {% for  Handle,Name,Email,Twitch,Twitter,Country,Shirt,influencer,Last_Updated,Mailing_Address,Phone,Youtube,Mixer,tags,events in info %}
+          {% for  Handle,Name,Email,Twitch,Twitter,Country,Shirt,influencer,Last_Updated,Mailing_Address,Phone,Youtube,Mixer,tags,events,lists in info %}
               <tr>
                   <td class="text" scope="row">{{ Handle }}</td>
                   <td class="text">{{ Name }}</td>
@@ -71,8 +76,11 @@
                   <td class="text" style="display:none">{{ Mailing_Address }}</td>
                   <td class="text" style="display:none">{{ Phone }}</td>
                   <td class="text" style="display:none">{{ Youtube }}</td>
+                  <td class="text" style="display:none">{{ Mixer }}</td>
                   <td class="text" style="display:none">{{ tags }}</td>
                   <td class="text" style="display:none">{{ events }}</td>
+                  <td class="text" style="display:none">{{ lists }}</td>
+
               </tr>
           {% endfor %}
           </tbody>

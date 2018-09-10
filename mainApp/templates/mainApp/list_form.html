@@ -14,10 +14,12 @@
               {% if exists %}
                 <h5 class="text-center text-danger">{{exists}} is already a List</h5>
               {% endif %}
-              <div class='form-group row my-4'>
-                <label class="form-label ml-2 col-3 text-center">Original</label>
-                <div class="tag-field col mr-4"><input type="text" placeholder={{test}} readonly /></div>
-              </div>
+              {% if update %}
+                <div class='form-group row my-4'>
+                  <label class="form-label ml-2 col-3 text-center">Original</label>
+                  <div class="tag-field col mr-4"><input type="text" placeholder={{test}} readonly /></div>
+                </div>
+              {% endif %}
               <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   {% for field in form %}

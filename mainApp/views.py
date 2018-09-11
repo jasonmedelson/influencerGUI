@@ -162,9 +162,10 @@ def InfluencerCreateCSV(request):
             # userid = request.user.id
             fields = form['seperate_fields_with_commas'].value()
             print('fields', fields)
-            stripped_fields = strip_tags(fields)
+            stripped_fields = strip_tags(fields).strip()
             print('stripped_fields',stripped_fields)
             field_array = stripped_fields.split(",")
+            field_array = list(map(str.strip, field_array))
             print('field_array',field_array)
             data = form['paste_CSV']
             stripped_data = strip_tags(data).strip()
@@ -259,7 +260,7 @@ def InfluencerCreateCSV(request):
                     print(inst)
             return redirect('index')
     form = InfluencerCSVForm()
-    return render(request, 'mainApp/events_form.html', {'form':form})
+    return render(request, 'mainApp/influencer_csv_form.html', {'form':form})
 
 
 

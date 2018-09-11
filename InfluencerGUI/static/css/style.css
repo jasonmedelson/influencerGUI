@@ -175,11 +175,20 @@ footer p {
   border-radius: 10px;
   font-weight: 600;
 }
+.influencer-csv-panel{
+  background: #fff;
+  padding:0;
+  border-radius: 20px;
+  max-width: 710px;
+  min-width: 450px;
+  height: 480px;
+}
 .influencer-form-panel{
   background: #fff;
   padding:0;
   border-radius: 20px;
   max-width: 940px;
+  min-width: 450px;
 }
 .influencer-form-label{
   color: #555;
@@ -210,6 +219,42 @@ div.tag-field ul{
 }
 #search-events, #search-tags{
   margin-bottom: 10px;
+}
+
+/* Helper Panel */
+.helper-panel{
+  height:100%;
+  background: #fff;
+  border-radius: 20px;
+  width:240px;
+  height: 480px;
+}
+.helper-panel .panel-head{
+  background: rgb(23, 162, 184);
+
+}
+.helper-list{
+  list-style: none;
+}
+.helper-list li{
+  margin:auto;
+}
+.helper-list li button{
+  width:70%;
+  margin:auto;
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+@media only screen and (max-width: 767px) {
+  .helper-panel{
+    height:100%;
+    background: #fff;
+    border-radius: 20px;
+    width:100%;
+    padding:0px;
+    min-width: 450px;
+  }
 }
 /* List Checkbox */
 ul#id_list_influencers li{

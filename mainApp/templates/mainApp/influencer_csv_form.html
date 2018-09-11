@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 col-md">
+              <div class='mx-auto my-4 helper-panel'>
+                <h2 class="panel-head ">
+                  Availible Fields
+                </h2>
+                <ul class="helper-list px-0">
+                  <li><button type="button" class="btn btn-primary btn-sm" value="influencer_handle" onclick="helper_button_handler(this.value)">influencer_handle</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="legal_name" onclick="helper_button_handler(this.value)">legal_name</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="email" onclick="helper_button_handler(this.value)">email</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="phone" onclick="helper_button_handler(this.value)">phone</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="twitter" onclick="helper_button_handler(this.value)">twitter</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="youtube" onclick="helper_button_handler(this.value)">youtube</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="twitch" onclick="helper_button_handler(this.value)">twitch</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="mixer" onclick="helper_button_handler(this.value)">mixer</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="shirt" onclick="helper_button_handler(this.value)">shirt</button></li>
+                  <li><button type="button" class="btn btn-primary btn-sm" value="country" onclick="helper_button_handler(this.value)">country</button></li>
+
+                </ul>
+              </div>
+          </div>
+          <div class="influencer-csv-panel col-sm-12 col-md-6 mx-auto my-4">
+              <h2 class="panel-head ">
+                Import CSV Data
+              </h2>
+              <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                  <div class="form-group row my-4">
+                    {% csrf_token %}
+                    {% for field in form %}
+                      <div class="">
+                          <span class="text-danger small">{{ field.errors }}</span>
+                      </div>
+                      <!-- {% if "mail" in field.label_tag %}
+                        <h1>FOUND</h1>
+                      {% endif %} -->
+                      <div class="col-12">
+                        <div class="form-label-container">
+                          <label class="influencer-form-label text-center">{{ field.label_tag|title }}</label>
+                        </div>
+                        <div class="">
+                          <div class="tag-field col">{{ field }}</div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                      <div class="">
+                        <button type="submit" class="btn btn-success submit-form">Submit</button>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}

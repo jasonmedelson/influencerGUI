@@ -2,7 +2,8 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row">
-          <div class="col-2"></div>
+          <div class="col-2">
+          </div>
           <div class="influencer-form-panel col-sm-12 col-md-8 mx-auto my-4">
               <h2 class="panel-head ">
                 {% if edit %}
@@ -38,7 +39,7 @@
                           <a href="{% url 'influencer-delete' pk=pk%}" class="btn btn-outline-danger submit-form mt-2">Delete This Influencer</a>
                         {% else %}
                           <button type="submit" class="btn btn-success submit-form">Submit</button>
-                          <a href="{% url 'influencer-add-csv' %}" class="btn btn-outline-danger submit-form mt-2">Import Influencers with CSV</a>
+                          <a href="{% url 'influencer-add-csv' %}" class="btn btn-outline-primary submit-form mt-2">Import Influencers with CSV</a>
                         {% endif %}
                       </div>
                   </div>

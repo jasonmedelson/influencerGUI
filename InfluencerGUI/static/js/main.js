@@ -155,6 +155,22 @@ function lists_filter(){
     }
   }
 }
+function helper_button_handler(btn_value){
+  textbox = $("#id_seperate_fields_with_commas").val()
+  textbox = textbox.trim()
+  if (textbox.length == 0){
+    textbox = btn_value;
+  }
+  else if (textbox.endsWith(",")){
+    textbox = textbox + ' ' + btn_value;
+  }
+  else{
+    textbox = textbox + ', ' + btn_value;
+  }
+  $("#id_seperate_fields_with_commas").val(textbox)
+
+
+}
 if ( $( "#id_tags" ).length ) {
     $( "#id_tags" ).before("<input type='text' id='search-tags' onkeyup='tags_filter()' placeholder='Search for Tags'></input>");
 }

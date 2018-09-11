@@ -515,18 +515,18 @@ def ListCreate(request):
 @login_required
 def ListUpdate(request, pk):
     list = get_object_or_404(List, list_user=request.user, list_id=pk)
+    original = list.list_name
     update = True
     exists = False
     if request.POST:
-        print('11111111111')
         form = ListCreateForm(request.user,request.POST, instance=list)
         test = form['list_name'].value()
-        print('t',test)
-        try:
-            check = List.objects.get(list_user=request.user, list_name=test)
-            exists = test
-        except:
-            pass
+        if not original == test:
+            try:
+                check = List.objects.get(list_user=request.user, list_name=test)
+                exists = test
+            except:
+                pass
         if not exists:
             if form.is_valid():
                 form.save()

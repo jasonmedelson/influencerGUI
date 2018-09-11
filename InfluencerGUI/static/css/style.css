@@ -136,6 +136,13 @@ footer p {
   border-radius: 20px;
   max-width: 430px;
 }
+.list-panel-body{
+  background: #fff;
+  padding:0;
+  border-radius: 20px;
+  max-width: 680px;
+  min-width: 310px
+}
 .panel-head{
   background: rgba(73, 47, 188, 0.8);
   text-align: center;
@@ -187,6 +194,7 @@ footer p {
   padding-bottom: 5px;
   height: 35px;
 }
+
 .form-label-container{
   height: 45px;
 }
@@ -203,4 +211,17 @@ div.tag-field ul{
 #search-events, #search-tags{
   margin-bottom: 10px;
 }
-/* Custom Checkbox */
+/* List Checkbox */
+ul#id_list_influencers li{
+  display: inline-block;
+  width: 49%;
+}
+@media only screen and (max-width: 1050px) {
+  ul#id_list_influencers li{
+    display: inline-block;
+    width: 80%;
+  }
+  ul#id_list_influencers{
+    padding-left: 20%;
+  }
+}

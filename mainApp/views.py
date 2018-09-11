@@ -5,10 +5,23 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm, EventForm, ListCreateForm
+from .forms import InfluencerCreateForm, TagFormCSV, EventFormCSV, TagForm, EventForm, ListCreateForm, InfluencerCSVForm
 from django import forms
 from django.utils.html import strip_tags
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+import csv
+
+def Test(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['First row', 'Foo', 'Bar', 'Baz'])
+    writer.writerow(['Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"])
+
+    return response
+
 
 def index(request):
     username = None
@@ -128,6 +141,7 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+@login_required
 def InfluencerCreate(request):
     if request.method == 'POST':
         form = InfluencerCreateForm( request.user, request.POST, )
@@ -140,7 +154,117 @@ def InfluencerCreate(request):
         form = InfluencerCreateForm(request.user)
     return render(request, 'mainApp/influencer_form.html', {'form': form})
 
+def InfluencerCreateCSV(request):
+    if request.method == 'POST':
+        form = InfluencerCSVForm(request.POST)
+        if form.is_valid():
+            username = request.user
+            # userid = request.user.id
+            fields = form['seperate_fields_with_commas'].value()
+            print('fields', fields)
+            stripped_fields = strip_tags(fields)
+            print('stripped_fields',stripped_fields)
+            field_array = stripped_fields.split(",")
+            print('field_array',field_array)
+            data = form['paste_CSV']
+            stripped_data = strip_tags(data).strip()
+            data_array = stripped_data.split(",")
+            print('data_array',data_array)
+            passed = []
+            failed = []
+            test_against = ['influencer_handle','legal_name','email','phone','twitter','youtube','twitch','mixer','shirt','country']
+            for element in field_array:
+                if element in test_against:
+                    passed.append(element)
+                    print(element, "Is a field catagory!!!!!!!!!")
+                else:
+                    print(element, "Is not a field catagory")
+            for element in test_against:
+                if element not in field_array:
+                    failed.append(element)
+                    print(element, "Field is not being populated")
+            print('passed', passed)
+            print('failed', failed)
+            Handle=[]
+            Name=[]
+            Email=[]
+            Twitch=[]
+            Twitter=[]
+            Youtube=[]
+            Mixer=[]
+            Country=[]
+            Shirt=[]
+            Phone=[]
+            pointer = 0
+            for item in data_array:
+                print('passed item', item)
+                catagory = passed[pointer]
+                if catagory == 'influencer_handle':
+                    Handle.append(item)
+                elif catagory == 'legal_name':
+                    Name.append(item)
+                elif catagory == 'email':
+                    Email.append(item)
+                elif catagory == 'phone':
+                    Phone.append(item)
+                elif catagory == 'twitter':
+                    Twitter.append(item)
+                elif catagory == 'youtube':
+                    Youtube.append(item)
+                elif catagory == 'twitch':
+                    Twitch.append(item)
+                elif catagory == 'mixer':
+                    Mixer.append(item)
+                elif catagory == 'shirt':
+                    Shirt.append(item)
+                elif catagory == 'country':
+                    Country.append(item)
+                pointer += 1
+                print('p',pointer)
+                if pointer >= len(passed):
+                    pointer -= len(passed)
+            for item in range(len(Handle)):
+                print('Failed item', item)
+                if 'influencer_handle' in failed:
+                    Handle.append("")
+                if 'legal_name' in failed:
+                    Name.append("")
+                if 'email' in failed:
+                    Email.append("")
+                if 'phone' in failed:
+                    Phone.append("")
+                if 'twitter' in failed:
+                    Twitter.append("")
+                if 'youtube' in failed:
+                    Youtube.append("")
+                if 'twitch' in failed:
+                    Twitch.append("")
+                if 'mixer' in failed:
+                    Mixer.append("")
+                if 'shirt' in failed:
+                    Shirt.append("")
+                if 'country' in failed:
+                    Country.append("")
+            print('Handle',Handle, len(Handle))
+            print('Email',Email, len(Email))
+            for item in range(len(Handle)):
+                print('item no #', item)
+                try:
+                    new_influencer = Influencer(user=username, influencer_handle=Handle[item], legal_name=Name[item], email=Email[item], phone=Phone[item], twitter=Twitter[item], youtube=Youtube[item],twitch=Twitch[item],mixer=Mixer[item],shirt=Shirt[item],country=Country[item])
+                    new_influencer.save()
+                except Exception as inst:
+                    print("Failed to create influencer: ",Handle[item])
+                    print(type(inst))
+                    print(inst.args)
+                    print(inst)
+            return redirect('index')
+    form = InfluencerCSVForm()
+    return render(request, 'mainApp/events_form.html', {'form':form})
 
+
+
+
+@login_required
 def InfluencerUpdate(request, pk):
     object = Influencer.objects.get(id = pk)
     if request.method == 'POST':
@@ -159,11 +283,13 @@ def InfluencerUpdate(request, pk):
     }
     return render(request, 'mainApp/influencer_form.html', context)
 
+#@login_required
 class InfluencerDelete(DeleteView):
     template_name = 'delete.html'
     model = Influencer
     success_url = reverse_lazy('index')
 
+#@login_required
 class TagCreate(CreateView):
     model = Tags
     fields = [
@@ -181,6 +307,7 @@ class TagCreate(CreateView):
         else:
             return redirect('index')
 
+@login_required
 def TagCreateCSV(request):
     form = TagFormCSV()
     if request.method == 'POST':
@@ -212,6 +339,7 @@ def TagCreateCSV(request):
                         )
     return render(request, 'mainApp/tag_csv_form.html', {'form':form})
 
+@login_required
 def TagUpdate(request, pk):
     tag = get_object_or_404(Tags, tag_user=request.user, id=pk)
     exists = False
@@ -236,13 +364,13 @@ def TagUpdate(request, pk):
                 'exists':exists}
     return render(request,'mainApp/tags_update.html',context)
 
-
+#@login_required
 class TagDelete(DeleteView):
     template_name = 'delete.html'
     model = Tags
     success_url = reverse_lazy('index')
 
-
+#@login_required
 class EventCreate(CreateView):
     model = Events
     fields = [
@@ -259,6 +387,7 @@ class EventCreate(CreateView):
         else:
             return redirect('index')
 
+@login_required
 def EventCreateCSV(request):
     form = EventFormCSV()
     if request.method == 'POST':
@@ -290,6 +419,7 @@ def EventCreateCSV(request):
                         )
     return render(request, 'mainApp/event_csv_form.html', {'form':form})
 
+@login_required
 def EventUpdate(request, pk):
     event = get_object_or_404(Events, event_user=request.user, id=pk)
     exists = False
@@ -314,11 +444,13 @@ def EventUpdate(request, pk):
                 'exists':exists}
     return render(request,'mainApp/events_update.html',context)
 
+#@login_required
 class EventDelete(DeleteView):
     template_name = 'delete.html'
     model = Events
     success_url = reverse_lazy('index')
 
+@login_required
 def lists(request):
     username = None
     if request.user.is_authenticated:
@@ -356,6 +488,7 @@ def lists(request):
 
     return render(request,'mainApp/list-home.html',context={'info':zipped})
 
+@login_required
 def ListCreate(request):
     if request.method == 'POST':
         form = ListCreateForm(request.user, request.POST)
@@ -379,6 +512,7 @@ def ListCreate(request):
         form = ListCreateForm(request.user)
     return render(request, 'mainApp/list_form.html', {'form': form})
 
+@login_required
 def ListUpdate(request, pk):
     list = get_object_or_404(List, list_user=request.user, list_id=pk)
     update = True
@@ -406,7 +540,7 @@ def ListUpdate(request, pk):
                 'exists':exists,
                 'update':update}
     return render(request,'mainApp/list_form.html',context)
-
+#
 # class ListUpdate(UpdateView):
 #     model = List
 #     fields = [
@@ -414,7 +548,7 @@ def ListUpdate(request, pk):
 #     'list_influencers'
 #     ]
 #     success_url = reverse_lazy('lists-home')
-
+#@login_required
 class ListDelete(DeleteView):
     template_name = 'delete.html'
     model = List

@@ -10,6 +10,7 @@ urlpatterns = [
     path('influencer/add/', views.InfluencerCreate, name='influencer-add'),
     path('influencer/<uuid:pk>/', views.InfluencerUpdate, name='influencer-update'),
     path('influencer/<uuid:pk>/delete/', views.InfluencerDelete.as_view(), name='influencer-delete'),
+    path('influencer/add/csv', views.InfluencerCreateCSV, name='influencer-add-csv'),
     path('tag/add/', views.TagCreate.as_view(), name='tag-add'),
     path('tag/add/csv', views.TagCreateCSV, name='tag-add-csv'),
     path('tag/<int:pk>/', views.TagUpdate, name='tag-update'),
@@ -22,5 +23,6 @@ urlpatterns = [
     path('list/add', views.ListCreate, name='lists-add'),
     path('list/<uuid:pk>/', views.ListUpdate, name='list-update'),
     path('list/<uuid:pk>/delete/', views.ListDelete.as_view(), name='list-delete'),
+    path('test/', views.Test, name='test-url')
 
 ]

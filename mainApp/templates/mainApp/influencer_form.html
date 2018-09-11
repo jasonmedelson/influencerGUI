@@ -38,6 +38,7 @@
                           <a href="{% url 'influencer-delete' pk=pk%}" class="btn btn-outline-danger submit-form mt-2">Delete This Influencer</a>
                         {% else %}
                           <button type="submit" class="btn btn-success submit-form">Submit</button>
+                          <a href="{% url 'influencer-add-csv' %}" class="btn btn-outline-danger submit-form mt-2">Import Influencers with CSV</a>
                         {% endif %}
                       </div>
                   </div>
